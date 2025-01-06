@@ -3,7 +3,7 @@ Analyzing complex datasets
 ### Task 1: Data Handling and Statistical Analysis
 
 #### Objective: 
-Assess candidates’ ability to handle complex data and apply statistical methods effectively
+Handle complex data and apply statistical methods effectively
 
 #### Background: 
 CpG methylation is an epigenetic marker that varies across tissue types. However, the methylation status of a single CpG site is unreliable as a biomarker due to
