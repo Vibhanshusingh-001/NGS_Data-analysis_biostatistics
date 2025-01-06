@@ -19,9 +19,9 @@ Phased methylation patterns (PMPs) can act as reliable biomarkers to differentia
 #### Dataset: 
 The dataset (Link to Data) summarizes phased methylation patterns from NGS results across two tissues. Key columns include:
 
-#### Strand: Indicates the DNA strand (‘f’ or ‘r’).
-#### CpG Coordinates: Relative positions of three CpG sites (x:y:z).
-#### Methylation Status: Eight possible patterns (‘000’ to ‘111’).
-#### Sample ID: Unique identifier for each sample.
-#### Replicate: Indicates technical replicates.
-#### Tissue: Tissue type (Tissue #1 or Tissue #2).
+	#### Strand:Indicates the DNA strand (‘f’ or ‘r’).
+	#### CpG Coordinates: Relative positions of three CpG sites (x:y:z).
+	#### Methylation Status: Eight possible patterns (‘000’ to ‘111’).
+	#### Sample ID: Unique identifier for each sample.
+	#### Replicate: Indicates technical replicates.
+	#### Tissue: Tissue type (Tissue #1 or Tissue #2).
