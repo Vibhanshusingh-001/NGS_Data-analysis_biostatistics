@@ -244,7 +244,11 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	grouped.to_csv(output_file, index=False)
 	
 	print(f"VRF results saved to {output_file}")
-	
+
+
+ ### Result of varient read fraction (screenshot of result file)
+ ![Screenshot from 2025-01-07 22-17-33](https://github.com/user-attachments/assets/4f1be094-f042-4518-a2e8-128fd8d640d5)
+
 		
 
 
