@@ -66,7 +66,7 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 
 
  ### Generate plots summarizing the coverage statistics
-	 import pandas as pd
+	import pandas as pd
 	import seaborn as sns
 	import matplotlib.pyplot as plt
 	
