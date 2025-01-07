@@ -62,3 +62,51 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	# Save the results to a CSV file or print them
 	final_results.to_csv('single_cpg_coverage_statistics.csv', index=False)
 	print(final_results)
+
+
+
+ ### Generate plots summarizing the coverage statistics
+	 import pandas as pd
+	import seaborn as sns
+	import matplotlib.pyplot as plt
+	
+	# Load your results 
+	results = pd.read_csv('single_cpg_coverage_statistics.csv')
+	
+	# Plot settings
+	sns.set(style="whitegrid")
+	plt.figure(figsize=(16, 10))
+	
+	# 1. Median plot
+	plt.subplot(2, 2, 1)
+	sns.barplot(data=results, x='CpG_Column', y='Median', hue='Tissue', palette='muted')
+	plt.title('Median Coverage per CpG Column')
+	plt.xlabel('CpG Column')
+	plt.ylabel('Median Coverage')
+	
+	# 2. Mean plot
+	plt.subplot(2, 2, 2)
+	sns.barplot(data=results, x='CpG_Column', y='Mean', hue='Tissue', palette='pastel')
+	plt.title('Mean Coverage per CpG Column')
+	plt.xlabel('CpG Column')
+	plt.ylabel('Mean Coverage')
+	
+	# 3. Standard Deviation plot
+	plt.subplot(2, 2, 3)
+	sns.barplot(data=results, x='CpG_Column', y='StdDev', hue='Tissue', palette='dark')
+	plt.title('Standard Deviation of Coverage per CpG coverage Column')
+	plt.xlabel('CpG Column')
+	plt.ylabel('Standard Deviation')
+	
+	# 4. CV plot
+	plt.subplot(2, 2, 4)
+	sns.barplot(data=results, x='CpG_Column', y='CV', hue='Tissue', palette='colorblind')
+	plt.title('Coefficient of Variation (CV) per CpG coverage Column')
+	plt.xlabel('CpG Column')
+	plt.ylabel('Coefficient of Variation')
+	
+	# Adjust layout and save the figure
+	plt.tight_layout()
+	plt.savefig('coverage_statistics_plots.png', dpi=300)
+	plt.show()
+
