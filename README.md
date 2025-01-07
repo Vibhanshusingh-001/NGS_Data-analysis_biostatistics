@@ -110,3 +110,6 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	plt.savefig('coverage_statistics_plots.png', dpi=300)
 	plt.show()
 
+ ![coverage_statistics_plots](https://github.com/user-attachments/assets/1908bc71-d701-4f50-88d4-207e02d01292)
+
+
