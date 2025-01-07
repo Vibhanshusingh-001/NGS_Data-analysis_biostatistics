@@ -25,3 +25,28 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	#### Sample ID: Unique identifier for each sample.
 	#### Replicate: Indicates technical replicates.
 	#### Tissue: Tissue type (Tissue #1 or Tissue #2).
+ # Coverage Analysis
+ ### Calculate the median and coefficient of variation (CV) for single CpG coverage in each tissue
+	 import pandas as pd
+	
+	# Load your dataset
+	df = pd.read_csv('PupilBioTest.csv')
+	
+	# Calculate total CpG coverage for each row
+	df['Total_Coverage'] = df[['`000', '`001', '`010', '`011', '`100', '`101', '`110', '`111']].sum(axis=1)
+	
+	# Group by Tissue
+	grouped = df.groupby('Tissue')
+	
+	# Calculate Median and Coefficient of Variation (CV)
+	results = grouped['Total_Coverage'].agg(
+	    Median='median',
+	    Mean='mean',
+	    StdDev='std'
+	)
+	results['CV'] = results['StdDev'] / results['Mean']
+	
+	# Save results to a CSV or print them
+	results.to_csv('coverage_statistics.csv')
+	print(results)
+
