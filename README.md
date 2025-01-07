@@ -27,38 +27,38 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	#### Tissue: Tissue type (Tissue #1 or Tissue #2).
  # Coverage Analysis
  ### Calculate the median and coefficient of variation (CV) for single CpG coverage in each tissue
-import pandas as pd
-
-
-df = pd.read_csv('PupilBioTest.csv')
-
-# Columns for single CpG coverage
-cpg_columns = ['`000', '`001', '`010', '`011', '`100', '`101', '`110', '`111']
-
-# Initialize a results dictionary to store metrics for each CpG column
-results = []
-
-# Loop through each CpG column and calculate statistics
-for cpg in cpg_columns:
-    # Group by Tissue and calculate Median, Mean, StdDev, and CV for the current CpG column
-    grouped = df.groupby('Tissue')[cpg].agg(
-        Median='median',
-        Mean='mean',
-        StdDev='std'
-    ).reset_index()
-    
-    # Add CV (Coefficient of Variation) to the grouped data
-    grouped['CV'] = grouped['StdDev'] / grouped['Mean']
-    
-    # Add a column to indicate which CpG column this analysis belongs to
-    grouped['CpG_Column'] = cpg
-    
-    # Append the result for this CpG column to the results list
-    results.append(grouped)
-
-# Concatenate all results into a single DataFrame
-final_results = pd.concat(results, ignore_index=True)
-
-# Save the results to a CSV file or print them
-final_results.to_csv('single_cpg_coverage_statistics.csv', index=False)
-print(final_results)
+	import pandas as pd
+	
+	
+	df = pd.read_csv('PupilBioTest.csv')
+	
+	# Columns for single CpG coverage
+	cpg_columns = ['`000', '`001', '`010', '`011', '`100', '`101', '`110', '`111']
+	
+	# Initialize a results dictionary to store metrics for each CpG column
+	results = []
+	
+	# Loop through each CpG column and calculate statistics
+	for cpg in cpg_columns:
+	    # Group by Tissue and calculate Median, Mean, StdDev, and CV for the current CpG column
+	    grouped = df.groupby('Tissue')[cpg].agg(
+	        Median='median',
+	        Mean='mean',
+	        StdDev='std'
+	    ).reset_index()
+	    
+	    # Add CV (Coefficient of Variation) to the grouped data
+	    grouped['CV'] = grouped['StdDev'] / grouped['Mean']
+	    
+	    # Add a column to indicate which CpG column this analysis belongs to
+	    grouped['CpG_Column'] = cpg
+	    
+	    # Append the result for this CpG column to the results list
+	    results.append(grouped)
+	
+	# Concatenate all results into a single DataFrame
+	final_results = pd.concat(results, ignore_index=True)
+	
+	# Save the results to a CSV file or print them
+	final_results.to_csv('single_cpg_coverage_statistics.csv', index=False)
+	print(final_results)
