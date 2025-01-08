@@ -379,7 +379,7 @@ Alignment score is greater than 95%
 	    fi
 	done
 	
-#### 2)identify somatic mutations present in the cancer sample but absent in the normal tissue.
+#### (b)identify somatic mutations present in the cancer sample but absent in the normal tissue.
 #### (i)Benchmark Software: Use established tools such as Mutect2,Strelka2, or VarScan2 for somatic mutation identification and background mutation estimation. 
 ## mutect2
 	#!/bin/bash
@@ -420,13 +420,9 @@ Alignment score is greater than 95%
 	
 	echo "All samples processed."
 
+#### (ii)Custom Code Development: Write your own scripts,leveraging tools like Samtools, bcftools, or Python/Rlibraries, to perform mutation detection and calculate therequired metrics.
 
-
-
-
-
-
-
+### calculation of the required metrics
 
 	 import vcfpy
 	import pandas as pd
@@ -462,8 +458,7 @@ Alignment score is greater than 95%
 	print("Metrics saved to 'variant_metrics.csv'")
 
 
-
-
+### visualisation 
 	  # Load libraries
 	library(ggplot2)
 	
@@ -481,7 +476,7 @@ Alignment score is greater than 95%
 	  geom_histogram(binwidth = 0.01, fill = "blue", color = "black") +
 	  labs(title = "Variant Allele Frequency Distribution", x = "VAF", y = "Count")
 			
-	
+#### (c) Use the normal tissue to calculate the median background mutation level.The background mutation level accounts for sequencing errors or biasesthat can mimic true mutations. Determine how many reads per million are required to confidently call a given mutation.
 	
 	
 
