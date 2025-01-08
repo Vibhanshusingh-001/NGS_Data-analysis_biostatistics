@@ -379,6 +379,10 @@ Alignment score is greater than 95%
 	    fi
 	done
 	
+#### 2)identify somatic mutations present in the cancer sample but absent in the normal tissue.
+#### (i)Benchmark Software: Use established tools such as Mutect2,Strelka2, or VarScan2 for somatic mutation identification and background mutation estimation. 
+
+
 
 
 
