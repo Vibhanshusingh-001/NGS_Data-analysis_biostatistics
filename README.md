@@ -381,10 +381,108 @@ Alignment score is greater than 95%
 	
 #### 2)identify somatic mutations present in the cancer sample but absent in the normal tissue.
 #### (i)Benchmark Software: Use established tools such as Mutect2,Strelka2, or VarScan2 for somatic mutation identification and background mutation estimation. 
+## mutect2
+	#!/bin/bash
+	
+	# Directories and files
+	input_dir="input"                        # Directory containing BAM files
+	output_dir="output_mutect"               # Directory to save VCF files
+	reference="GCA_000001405.29_GRCh38.p14_genomic.fna" # Reference genome file
+	
+	# Create output directory if it doesn't exist
+	mkdir -p "$output_dir"
+	
+	# Loop through BAM files in the input directory
+	for bam_file in "$input_dir"/*.bam; do
+	    if [ -f "$bam_file" ]; then
+	        # Get the base name of the BAM file
+	        base_name=$(basename "$bam_file" .bam)
+	        output_vcf="$output_dir/${base_name}.vcf"
+	        
+	        echo "Processing $bam_file..."
+	        
+	        # Main Mutect2 command
+	        gatk Mutect2 \
+	            -R "$reference" \
+	            -I "$bam_file" \
+	            -O "$output_vcf" \
+	
+	        # Check for errors
+	        if [ $? -eq 0 ]; then
+	            echo "Completed $bam_file -> $output_vcf"
+	        else
+	            echo "Error processing $bam_file" >&2
+	        fi
+	    else
+	        echo "No BAM files found in $input_dir."
+	    fi
+	done
+	
+	echo "All samples processed."
 
 
 
 
 
+
+
+
+
+	 import vcfpy
+	import pandas as pd
+	
+	# Define input VCF file
+	vcf_file = "fixed_1.vcf"
+	
+	# Initialize metrics storage
+	variant_data = []
+	
+	# Parse VCF file
+	vcf_reader = vcfpy.Reader(open(vcf_file, 'r'))
+	for record in vcf_reader:
+	    chrom = record.CHROM
+	    pos = record.POS
+	    ref = record.REF
+	    alt = ','.join([str(a) for a in record.ALT])
+	    qual = record.QUAL
+	    dp = record.INFO.get('DP', 0)  # Read Depth
+	    af = record.INFO.get('AF', [0])[0]  # Variant Allele Frequency (if available)
+	
+	    # Calculate metrics (VAF, transitions/transversions, etc.)
+	    ti_tv = 'Transition' if {ref, alt}.issubset({'A', 'G', 'C', 'T'}) and \
+	        (ref + alt in ['AG', 'GA', 'CT', 'TC']) else 'Transversion'
+	
+	    # Append to results
+	    variant_data.append([chrom, pos, ref, alt, qual, dp, af, ti_tv])
+	
+	# Save to a CSV file
+	df = pd.DataFrame(variant_data, columns=['CHROM', 'POS', 'REF', 'ALT', 'QUAL', 'DP', 'AF', 'Ti/Tv'])
+	df.to_csv('variant_metrics.csv', index=False)
+	
+	print("Metrics saved to 'variant_metrics.csv'")
+
+
+
+
+	  # Load libraries
+	library(ggplot2)
+	
+	# Read the variant metrics file
+	variant_data <- read.csv("variant_metrics.csv")
+	
+	# Calculate overall Ti/Tv ratio
+	ti_count <- sum(variant_data$Ti.Tv == "Transition")
+	tv_count <- sum(variant_data$Ti.Tv == "Transversion")
+	ti_tv_ratio <- ti_count / tv_count
+	cat("Transition/Transversion Ratio:", ti_tv_ratio, "\n")
+	
+	# Plot VAF distribution
+	ggplot(variant_data, aes(x = AF)) +
+	  geom_histogram(binwidth = 0.01, fill = "blue", color = "black") +
+	  labs(title = "Variant Allele Frequency Distribution", x = "VAF", y = "Count")
+			
+	
+	
+	
 
 
