@@ -25,7 +25,8 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	#### Sample ID: Unique identifier for each sample.
 	#### Replicate: Indicates technical replicates.
 	#### Tissue: Tissue type (Tissue #1 or Tissue #2).
- # Coverage Analysis
+
+ ## Coverage Analysis
  ### Calculate the median and coefficient of variation (CV) for single CpG coverage in each tissue
 	import pandas as pd
 	
@@ -251,9 +252,89 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 
  # Address the following questions 
  ### How does sequencing depth affect specificity confidence?
+Sequencing depth directly affects specificity confidence by improving accuracy and reducing errors. Higher depth ensures reliable detection of true variants or methylation patterns, minimizes false positives/negatives, and increases statistical power.
+High Sequencing Depth: Benefits
+ 	Increased Accuracy
+ 	Minimized False Positives/Negatives
+ 	Rare Variant Detection
+ 	Improved Statistical Power
+ 	Consistent Normalization
+Low Sequencing Depth: Drawbacks
+ 	Higher Error Rates
+ 	Ambiguous Results
+ 	Reduced Sensitivitys
+### For the top 10 PMPs, estimate the threshold of reads required to confidently call Tissue #2 at a sequencing depth of 1 million reads.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Validate the hypothesis by comparing the specificity of the top 10 PMPs against individual CpG sites
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		
 
+
+
+# Task 2: NGS Data Analysis
+## Objective: Evaluate candidates’ ability to process and analyze raw sequencing data.
+### Quality Control 
+### Perform quality checks using tools like FastQC and summarize quality metrics (e.g., sequence counts, per-base quality, read duplication levels)
+### Per Base Sequence Quality
+
+The graph in this section shows the quality scores for each base position in the sequencing reads. The quality score is shown by the y-axis, while the read’s location is represented by the x-axis. The graph’s line or bars show how the quality scores vary with the length of the reads.
+![image](https://github.com/user-attachments/assets/4e121559-4399-463e-82f9-93f9c529221e)
+
+### Sequence Duplication level
+
+This metric reveals if specific sequences are overrepresented as a result of biases in the library preparation or sequencing process by giving insights into the degree of duplication within a sequencing dataset. Increased duplication levels may indicate that particular sequences were amplified or enriched more frequently than others during library preparation. The results of subsequent investigations, including variant calling or differential gene expression analysis, may become skewed as a result of biassed representation.
+![image](https://github.com/user-attachments/assets/f8139186-d3b7-4125-a2db-a43511714464)
+
+### Per Sequence Quality Scores
+
+The graph in this section shows the average quality score distribution over all sequences. The number or percentage of sequences with that average quality score is shown on the y-axis, which is parallel to the x-axis and displays quality scores.
+![image](https://github.com/user-attachments/assets/a8b3bf4b-2115-4327-b6f4-97dfe996e58a)
 
 
 
