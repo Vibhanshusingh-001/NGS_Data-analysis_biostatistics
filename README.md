@@ -321,6 +321,9 @@ Low Sequencing Depth: Drawbacks
 ## Objective: Evaluate candidates’ ability to process and analyze raw sequencing data.
 ### 1) Quality Control 
 ### (a)Perform quality checks using tools like FastQC and summarize quality metrics (e.g., sequence counts, per-base quality, read duplication levels)
+	# command to run fastqc
+	fastqc <filename.fastq> -o <output_directory>
+
 #### Per Base Sequence Quality
 The graph in this section shows the quality scores for each base position in the sequencing reads. The quality score is shown by the y-axis, while the read’s location is represented by the x-axis. The graph’s line or bars show how the quality scores vary with the length of the reads.
 ![image](https://github.com/user-attachments/assets/4e121559-4399-463e-82f9-93f9c529221e)
@@ -333,6 +336,49 @@ The graph in this section shows the average quality score distribution over all 
 ### 2) Alignment and Mutation Calling
 #### (a)Align the samples to the human genome using tools like Bowtie2 or BWA.
 Alignment score is greater than 95% 
+	#!/bin/bash
+	
+	# Load BWA and Samtools modules (uncomment if needed)
+	# module load bwa
+	# module load samtools
+	
+	# Define reference genome
+	REF="GCA_000001405.29_GRCh38.p14_genomic.fna"
+	
+	# Define specific samples with their prefixes
+	SAMPLES=("PA220KH-lib09-P19-Tumor_S2_L001" "PA221MH-lib09-P19-Norm_S1_L001")
+	
+	# Process each sample
+	for SAMPLE in "${SAMPLES[@]}"; do
+	    # Define file names for paired-end reads
+	    READ1="${SAMPLE}_R1_001.fastq.gz"
+	    READ2="${SAMPLE}_R2_001.fastq.gz"
+	    SAM_OUTPUT="${SAMPLE}.sam"
+	    BAM_OUTPUT="${SAMPLE}.bam"
+	    SORTED_BAM_OUTPUT="${SAMPLE}_sorted.bam"
+	
+	    # Check if input files exist
+	    if [[ -f "$READ1" && -f "$READ2" ]]; then
+	        echo "Processing $SAMPLE..."
+	
+	        # Align paired-end reads using BWA MEM
+	        bwa mem "$REF" "$READ1" "$READ2" > "$SAM_OUTPUT"
+	
+	        # Convert SAM to BAM
+	        samtools view -Sb "$SAM_OUTPUT" > "$BAM_OUTPUT"
+	
+	        # Sort the BAM file
+	        samtools sort "$BAM_OUTPUT" -o "$SORTED_BAM_OUTPUT"
+	
+	        # Optionally index the sorted BAM file
+	        samtools index "$SORTED_BAM_OUTPUT"
+	
+	        echo "Finished processing $SAMPLE."
+	    else
+	        echo "Warning: Input files for $SAMPLE not found."
+	    fi
+	done
+	
 
 
 
