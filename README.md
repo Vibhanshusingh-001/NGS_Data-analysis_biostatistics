@@ -322,17 +322,12 @@ Low Sequencing Depth: Drawbacks
 ### Quality Control 
 ### Perform quality checks using tools like FastQC and summarize quality metrics (e.g., sequence counts, per-base quality, read duplication levels)
 ### Per Base Sequence Quality
-
 The graph in this section shows the quality scores for each base position in the sequencing reads. The quality score is shown by the y-axis, while the read’s location is represented by the x-axis. The graph’s line or bars show how the quality scores vary with the length of the reads.
 ![image](https://github.com/user-attachments/assets/4e121559-4399-463e-82f9-93f9c529221e)
-
 ### Sequence Duplication level
-
 This metric reveals if specific sequences are overrepresented as a result of biases in the library preparation or sequencing process by giving insights into the degree of duplication within a sequencing dataset. Increased duplication levels may indicate that particular sequences were amplified or enriched more frequently than others during library preparation. The results of subsequent investigations, including variant calling or differential gene expression analysis, may become skewed as a result of biassed representation.
 ![image](https://github.com/user-attachments/assets/f8139186-d3b7-4125-a2db-a43511714464)
-
 ### Per Sequence Quality Scores
-
 The graph in this section shows the average quality score distribution over all sequences. The number or percentage of sequences with that average quality score is shown on the y-axis, which is parallel to the x-axis and displays quality scores.
 ![image](https://github.com/user-attachments/assets/a8b3bf4b-2115-4327-b6f4-97dfe996e58a)
 
