@@ -424,7 +424,7 @@ Alignment score is greater than 95%
 
 ### calculation of the required metrics
 
-	 import vcfpy
+	import vcfpy
 	import pandas as pd
 	
 	# Define input VCF file
@@ -459,7 +459,7 @@ Alignment score is greater than 95%
 
 
 ### visualisation 
-	  # Load libraries
+	# Load libraries
 	library(ggplot2)
 	
 	# Read the variant metrics file
@@ -475,6 +475,8 @@ Alignment score is greater than 95%
 	ggplot(variant_data, aes(x = AF)) +
 	  geom_histogram(binwidth = 0.01, fill = "blue", color = "black") +
 	  labs(title = "Variant Allele Frequency Distribution", x = "VAF", y = "Count")
+   ![Screenshot from 2025-01-08 23-43-30](https://github.com/user-attachments/assets/50e8fcf7-e13b-4dd4-9a26-dca224622797)
+
 			
 #### (c) Use the normal tissue to calculate the median background mutation level.The background mutation level accounts for sequencing errors or biasesthat can mimic true mutations. Determine how many reads per million are required to confidently call a given mutation.
 	
