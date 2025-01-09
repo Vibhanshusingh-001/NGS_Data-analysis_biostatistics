@@ -117,7 +117,7 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 
  # Biomarker Identification
  ### Identify PMPs with high specificity for tissue differentiation, minimizing false positives for Tissue #1 while allowing some false negatives. Use statistical or machine learning approaches to assign confidence (e.g., p-values) to each PMP
- ### The analysis was conducted on a small subset of the data rather than the entire dataset due to system limitations.
+ # The analysis was conducted on a small subset of the data rather than the entire dataset due to system limitations.(approx. 300 cell from whole csv file)
 	 #!/usr/bin/env python3
 	
 	import pandas as pd
@@ -253,19 +253,39 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
  # Address the following questions 
  ### How does sequencing depth affect specificity confidence?
 Sequencing depth directly affects specificity confidence by improving accuracy and reducing errors. Higher depth ensures reliable detection of true variants or methylation patterns, minimizes false positives/negatives, and increases statistical power.
-High Sequencing Depth: Benefits
+#### High Sequencing Depth: Benefits
  	Increased Accuracy
  	Minimized False Positives/Negatives
  	Rare Variant Detection
  	Improved Statistical Power
  	Consistent Normalization
-Low Sequencing Depth: Drawbacks
+#### Low Sequencing Depth: Drawbacks
  	Higher Error Rates
  	Ambiguous Results
  	Reduced Sensitivitys
 ### For the top 10 PMPs, estimate the threshold of reads required to confidently call Tissue #2 at a sequencing depth of 1 million reads.
+	
+	import pandas as pd
+	
+	file_path = "statistical_significant_pmps.csv"  # Use the provided data file
+	data = pd.read_csv(file_path)
+	
+	# Sort by Adjusted P-Value (column 'Adjusted_P_Value') to get the top 10 PMPs
+	top_pmps = data.sort_values(by='Adjusted_P_Value').head(10)
+	
+	# Assuming a sequencing depth of 1 million reads for Tissue #2
+	sequencing_depth_t2 = 1_000_000
+	
+	# Estimate the threshold of reads required for each PMP
+	top_pmps['Threshold_Reads_T2'] = top_pmps['Total_Count_T2'] / top_pmps['Total_Count_T2'].sum() * sequencing_depth_t2
+	
+	# Save or display the results
+	print(top_pmps[['CpG_Coordinates', 'Methylation_Status', 'Total_Count_T2', 'Threshold_Reads_T2']])
 
+ ![Screenshot from 2025-01-09 14-06-05](https://github.com/user-attachments/assets/6f727b27-c4ee-45da-b3e2-90bc57996c0d)
 
+	
+	
 
 
 
