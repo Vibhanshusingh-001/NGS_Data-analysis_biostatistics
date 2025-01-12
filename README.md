@@ -69,7 +69,7 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	import seaborn as sns
 	import matplotlib.pyplot as plt
 	
-	# Load your results 
+	# Load your results ed 
 	results = pd.read_csv('single_cpg_coverage_statistics.csv')
 	
 	# Plot settings
