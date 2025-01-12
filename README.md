@@ -26,20 +26,18 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	#### Replicate: Indicates technical replicates.
 	#### Tissue: Tissue type (Tissue #1 or Tissue #2).
 
- ## Coverage Analysis
+ # Coverage Analysis
  ### Calculate the median and coefficient of variation (CV) for single CpG coverage in each tissue
-	import pandas as pd
-	
-	
+	import pandas as pd		
 	df = pd.read_csv('PupilBioTest.csv')
 	
-	# Columns for single CpG coverage
+	# columns to analyse coverage
 	cpg_columns = ['`000', '`001', '`010', '`011', '`100', '`101', '`110', '`111']
 	
-	# Initialize a results dictionary to store metrics for each CpG column
+	# dictionary to store metrics for each CpG column
 	results = []
 	
-	# Loop through each CpG column and calculate statistics
+	# loop through each CpG column and calculate statistics
 	for cpg in cpg_columns:
 	    # Group by Tissue and calculate Median, Mean, StdDev, and CV for the current CpG column
 	    grouped = df.groupby('Tissue')[cpg].agg(
@@ -48,19 +46,19 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	        StdDev='std'
 	    ).reset_index()
 	    
-	    # Add CV (Coefficient of Variation) to the grouped data
+	    # add CV to the grouped data
 	    grouped['CV'] = grouped['StdDev'] / grouped['Mean']
 	    
-	    # Add a column to indicate which CpG column this analysis belongs to
+	    # add a column to indicate which CpG column this analysis belongs to
 	    grouped['CpG_Column'] = cpg
 	    
-	    # Append the result for this CpG column to the results list
+	    # append the result for this CpG column to the results list
 	    results.append(grouped)
 	
-	# Concatenate all results into a single DataFrame
+	# merge all results into a single DataFrame
 	final_results = pd.concat(results, ignore_index=True)
 	
-	# Save the results to a CSV file or print them
+	# Save the results
 	final_results.to_csv('single_cpg_coverage_statistics.csv', index=False)
 	print(final_results)
 
