@@ -31,22 +31,21 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	import pandas as pd		
 	df = pd.read_csv('PupilBioTest.csv')
 	
-	# columns to analyse coverage
 	cpg_columns = ['`000', '`001', '`010', '`011', '`100', '`101', '`110', '`111']
 	
 	# dictionary to store metrics for each CpG column
 	results = []
 	
-	# loop through each CpG column and calculate statistics
+	# loop through each CpG column 
 	for cpg in cpg_columns:
-	    # Group by Tissue and calculate Median, Mean, StdDev, and CV for the current CpG column
+	    # group by tissue
 	    grouped = df.groupby('Tissue')[cpg].agg(
 	        Median='median',
 	        Mean='mean',
 	        StdDev='std'
 	    ).reset_index()
 	    
-	    # add CV to the grouped data
+	 
 	    grouped['CV'] = grouped['StdDev'] / grouped['Mean']
 	    
 	    # add a column to indicate which CpG column this analysis belongs to
@@ -55,10 +54,10 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	    # append the result for this CpG column to the results list
 	    results.append(grouped)
 	
-	# merge all results into a single DataFrame
+	# merge all results 
 	final_results = pd.concat(results, ignore_index=True)
 	
-	# Save the results
+
 	final_results.to_csv('single_cpg_coverage_statistics.csv', index=False)
 	print(final_results)
 
@@ -69,10 +68,9 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	import seaborn as sns
 	import matplotlib.pyplot as plt
 	
-	# Load your results ed 
 	results = pd.read_csv('single_cpg_coverage_statistics.csv')
 	
-	# Plot settings
+	# Plot 
 	sns.set(style="whitegrid")
 	plt.figure(figsize=(16, 10))
 	
@@ -104,7 +102,6 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	plt.xlabel('CpG Column')
 	plt.ylabel('Coefficient of Variation')
 	
-	# Adjust layout and save the figure
 	plt.tight_layout()
 	plt.savefig('coverage_statistics_plots.png', dpi=300)
 	plt.show()
@@ -115,26 +112,26 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 
  # Biomarker Identification
  ### Identify PMPs with high specificity for tissue differentiation, minimizing false positives for Tissue #1 while allowing some false negatives. Use statistical or machine learning approaches to assign confidence (e.g., p-values) to each PMP
- # The analysis was conducted on a small subset of the data rather than the entire dataset due to system limitations.(approx. 300 cell from whole csv file)
-	 #!/usr/bin/env python3
+
+	 
 	
 	import pandas as pd
 	from scipy.stats import fisher_exact
 	from statsmodels.stats.multitest import multipletests
 	
-	# Load dataset in chunks
+	#  dataset in chunks
 	chunk_size = 50
 	file_path = "PupilBioTest.csv"  # Replace with your file
 	methylation_cols = ['`000', '`001', '`010', '`011', '`100', '`101', '`110', '`111']
 	
-	# Initialize an output file
+	# initialize an output file
 	output_file = "statistical_results_temp.csv"
 	with open(output_file, 'w') as f:
 	    f.write("strand,CpG_Coordinates,Methylation_Status,Total_Count_T1,Total_Count_T2,P_Value\n")
 	
 	# Process dataset in chunks
 	for chunk in pd.read_csv(file_path, chunksize=chunk_size):
-	    # Melt the chunk
+	    # melt the chunk
 	    melted_chunk = chunk.melt(
 	        id_vars=['strand', 'CpG_Coordinates', 'Sample_ID', 'Replicate', 'Tissue'],
 	        value_vars=methylation_cols,
@@ -147,14 +144,14 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	        Total_Count=('Count', 'sum')
 	    ).reset_index()
 	    
-	    # Separate tissues
-	    tissue1 = 'cfDNA'  # Replace with actual tissue name
-	    tissue2 = 'Islet'  # Replace with actual tissue name
+	    
+	    tissue1 = 'cfDNA' 
+	    tissue2 = 'Islet' 
 	    
 	    tissue1_data = grouped[grouped['Tissue'] == tissue1]
 	    tissue2_data = grouped[grouped['Tissue'] == tissue2]
 	    
-	    # Merge for comparison
+	    # merge for comparison
 	    comparison = pd.merge(
 	        tissue1_data[['strand', 'CpG_Coordinates', 'Methylation_Status', 'Total_Count']],
 	        tissue2_data[['strand', 'CpG_Coordinates', 'Methylation_Status', 'Total_Count']],
@@ -163,7 +160,7 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	        suffixes=('_T1', '_T2')
 	    ).fillna(0)
 	    
-	    # Perform Fisher's Exact Test for each row
+	    # Fisher's Exact Test for each row
 	    results = []
 	    for _, row in comparison.iterrows():
 	        contingency_table = [
@@ -187,34 +184,34 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	else:
 	    df_results['Adjusted_P_Value'] = None
 	
-	# Filter significant PMPs
+	# Filter PMPs
 	significant_pmps = df_results[df_results['Adjusted_P_Value'] < 0.05]
 	
-	# Save final significant results
+	
 	significant_pmps.to_csv('statistical_significant_pmps.csv', index=False)
 	print("Significant PMPs saved to 'statistical_significant_pmps.csv'")
 
 
  ### Calculate the mean variant read fraction (VRF) for each PMP in both tissues
-	 #!/usr/bin/env python3
+	
 	
 	import pandas as pd
 	
-	# Load dataset
+	
 	file_path = "PupilBioTest.csv"  # Replace with your actual file name
 	methylation_cols = ['`000', '`001', '`010', '`011', '`100', '`101', '`110', '`111']
 	
-	# Load the data and clean column names
-	df = pd.read_csv(file_path)
-	df.columns = df.columns.str.strip()  # Remove leading/trailing spaces from column names
 	
-	# Verify columns exist
+	df = pd.read_csv(file_path)
+	df.columns = df.columns.str.strip() 
+	
+	
 	required_columns = ['strand', 'CpG_Coordinates', 'Sample_ID', 'Replicate', 'Tissue'] + methylation_cols
 	for col in required_columns:
 	    if col not in df.columns:
 	        raise ValueError(f"Column '{col}' not found in the dataset. Please check your input file.")
 	
-	# Melt the dataset to create a 'Methylation_Status' column
+	# melt the dataset to create a 'Methylation_Status' column
 	df_melted = df.melt(
 	    id_vars=['strand', 'CpG_Coordinates', 'Sample_ID', 'Replicate', 'Tissue'],
 	    value_vars=methylation_cols,
@@ -222,7 +219,7 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	    value_name='Count'
 	)
 	
-	# Create Phased Methylation Pattern (PMP)
+	# create PMP
 	df_melted['PMP'] = (
 	    df_melted['strand'] + ':' + df_melted['CpG_Coordinates'] + ':' + df_melted['Methylation_Status']
 	)
@@ -232,13 +229,13 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	    Total_Count=('Count', 'sum')
 	).reset_index()
 	
-	# Calculate the total counts per tissue
+	# calculate the total counts per tissue
 	grouped['Total_Tissue_Count'] = grouped.groupby('Tissue')['Total_Count'].transform('sum')
 	
-	# Calculate Variant Read Fraction (VRF)
+	# Calculate VRF
 	grouped['VRF'] = grouped['Total_Count'] / grouped['Total_Tissue_Count']
 	
-	# Save the VRF results to a file
+	
 	output_file = "vrf_results.csv"
 	grouped.to_csv(output_file, index=False)
 	
@@ -265,19 +262,18 @@ Sequencing depth directly affects specificity confidence by improving accuracy a
 	
 	import pandas as pd
 	
-	file_path = "statistical_significant_pmps.csv"  # Use the provided data file
+	file_path = "statistical_significant_pmps.csv" 
 	data = pd.read_csv(file_path)
 	
-	# Sort by Adjusted P-Value (column 'Adjusted_P_Value') to get the top 10 PMPs
+	# sort by Adjusted P-Value to get the top 10 PMPs
 	top_pmps = data.sort_values(by='Adjusted_P_Value').head(10)
 	
-	# Assuming a sequencing depth of 1 million reads for Tissue #2
+	# assuming a sequencing depth of 1 million reads for tissue #2
 	sequencing_depth_t2 = 1_000_000
 	
 	# Estimate the threshold of reads required for each PMP
 	top_pmps['Threshold_Reads_T2'] = top_pmps['Total_Count_T2'] / top_pmps['Total_Count_T2'].sum() * sequencing_depth_t2
 	
-	# Save or display the results
 	print(top_pmps[['CpG_Coordinates', 'Methylation_Status', 'Total_Count_T2', 'Threshold_Reads_T2']])
 
  ![Screenshot from 2025-01-09 14-06-05](https://github.com/user-attachments/assets/6f727b27-c4ee-45da-b3e2-90bc57996c0d)
@@ -354,19 +350,11 @@ The graph in this section shows the average quality score distribution over all 
 ### 2) Alignment and Mutation Calling
 #### (a)Align the samples to the human genome using tools like Bowtie2 or BWA.
 Alignment score is greater than 95% 
-	#!/bin/bash
-	
-	# Load BWA and Samtools modules (uncomment if needed)
-	# module load bwa
-	# module load samtools
-	
-	# Define reference genome
+
 	REF="GCA_000001405.29_GRCh38.p14_genomic.fna"
 	
-	# Define specific samples with their prefixes
 	SAMPLES=("PA220KH-lib09-P19-Tumor_S2_L001" "PA221MH-lib09-P19-Norm_S1_L001")
 	
-	# Process each sample
 	for SAMPLE in "${SAMPLES[@]}"; do
 	    # Define file names for paired-end reads
 	    READ1="${SAMPLE}_R1_001.fastq.gz"
@@ -375,20 +363,18 @@ Alignment score is greater than 95%
 	    BAM_OUTPUT="${SAMPLE}.bam"
 	    SORTED_BAM_OUTPUT="${SAMPLE}_sorted.bam"
 	
-	    # Check if input files exist
+	    
 	    if [[ -f "$READ1" && -f "$READ2" ]]; then
 	        echo "Processing $SAMPLE..."
 	
-	        # Align paired-end reads using BWA MEM
+	        # align paired-end reads using BWA MEM
 	        bwa mem "$REF" "$READ1" "$READ2" > "$SAM_OUTPUT"
 	
-	        # Convert SAM to BAM
+	        #  SAM to BAM
 	        samtools view -Sb "$SAM_OUTPUT" > "$BAM_OUTPUT"
 	
-	        # Sort the BAM file
 	        samtools sort "$BAM_OUTPUT" -o "$SORTED_BAM_OUTPUT"
 	
-	        # Optionally index the sorted BAM file
 	        samtools index "$SORTED_BAM_OUTPUT"
 	
 	        echo "Finished processing $SAMPLE."
@@ -400,17 +386,15 @@ Alignment score is greater than 95%
 #### (b)identify somatic mutations present in the cancer sample but absent in the normal tissue.
 #### (i)Benchmark Software: Use established tools such as Mutect2,Strelka2, or VarScan2 for somatic mutation identification and background mutation estimation. 
 ## mutect2
-	#!/bin/bash
 	
-	# Directories and files
-	input_dir="input"                        # Directory containing BAM files
-	output_dir="output_mutect"               # Directory to save VCF files
+	
+	
+	input_dir="input"                      
+	output_dir="output_mutect"              
 	reference="GCA_000001405.29_GRCh38.p14_genomic.fna" # Reference genome file
 	
-	# Create output directory if it doesn't exist
 	mkdir -p "$output_dir"
 	
-	# Loop through BAM files in the input directory
 	for bam_file in "$input_dir"/*.bam; do
 	    if [ -f "$bam_file" ]; then
 	        # Get the base name of the BAM file
@@ -419,7 +403,7 @@ Alignment score is greater than 95%
 	        
 	        echo "Processing $bam_file..."
 	        
-	        # Main Mutect2 command
+	        #  Mutect2 command
 	        gatk Mutect2 \
 	            -R "$reference" \
 	            -I "$bam_file" \
@@ -441,21 +425,21 @@ Alignment score is greater than 95%
 #### (ii)Custom Code Development: Write your own scripts,leveraging tools like Samtools, bcftools, or Python/Rlibraries, to perform mutation detection and calculate therequired metrics.
 
 ### levraging tools for mutation detection
-	#!/bin/bash
 	
-	# Define input files and reference genome
+	
+	
 	BAM_FILE="fixed_1.bam"
 	REF_GENOME="GCA_000001405.29_GRCh38.p14_genomic.fna"
 	VCF_OUTPUT="variants.vcf"
 	FILTERED_VCF="filtered_variants.vcf"
 	
-	# Step 1: Generate Pileup File
+	#  generate Pileup File
 	samtools mpileup -f "$REF_GENOME" "$BAM_FILE" > "sample.pileup"
 	
-	# Step 2: Call Variants with bcftools
+	# call Variants with bcftools
 	bcftools call -c -v -o "$VCF_OUTPUT" "sample.pileup"
 	
-	# Step 3: Filter Variants (e.g., minimum depth of 10, QUAL > 20)
+	#  filter Variants 
 	bcftools filter -i 'QUAL>20 && DP>10' -o "$FILTERED_VCF" "$VCF_OUTPUT"
 	
 	echo "Variant calling and filtering completed. Results saved in $FILTERED_VCF"
@@ -465,10 +449,8 @@ Alignment score is greater than 95%
 	import vcfpy
 	import pandas as pd
 	
-	# Define input VCF file
 	vcf_file = "fixed_1.vcf"
 	
-	# Initialize metrics storage
 	variant_data = []
 	
 	# Parse VCF file
@@ -482,33 +464,27 @@ Alignment score is greater than 95%
 	    dp = record.INFO.get('DP', 0)  # Read Depth
 	    af = record.INFO.get('AF', [0])[0]  # Variant Allele Frequency (if available)
 	
-	    # Calculate metrics (VAF, transitions/transversions, etc.)
 	    ti_tv = 'Transition' if {ref, alt}.issubset({'A', 'G', 'C', 'T'}) and \
 	        (ref + alt in ['AG', 'GA', 'CT', 'TC']) else 'Transversion'
 	
 	    # Append to results
 	    variant_data.append([chrom, pos, ref, alt, qual, dp, af, ti_tv])
 	
-	# Save to a CSV file
 	df = pd.DataFrame(variant_data, columns=['CHROM', 'POS', 'REF', 'ALT', 'QUAL', 'DP', 'AF', 'Ti/Tv'])
 	df.to_csv('variant_metrics.csv', index=False)
 	
-	print("Metrics saved to 'variant_metrics.csv'")
 
 
 ### visualisation 
-	# Load libraries
+	
 	library(ggplot2)
 	
-	# Read the variant metrics file
 	variant_data <- read.csv("variant_metrics.csv")
 	
-	# Calculate overall Ti/Tv ratio
 	ti_count <- sum(variant_data$Ti.Tv == "Transition")
 	tv_count <- sum(variant_data$Ti.Tv == "Transversion")
 	ti_tv_ratio <- ti_count / tv_count
 	cat("Transition/Transversion Ratio:", ti_tv_ratio, "\n")
-	
 	# Plot VAF distribution
 	ggplot(variant_data, aes(x = AF)) +
 	  geom_histogram(binwidth = 0.01, fill = "blue", color = "black") +
