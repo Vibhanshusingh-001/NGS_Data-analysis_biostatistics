@@ -204,14 +204,11 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	
 	import pandas as pd
 	
-	
 	file_path = "PupilBioTest.csv"  # Replace with your actual file name
 	methylation_cols = ['`000', '`001', '`010', '`011', '`100', '`101', '`110', '`111']
 	
-	
 	df = pd.read_csv(file_path)
-	df.columns = df.columns.str.strip() 
-	
+	df.columns = df.columns.str.strip()  
 	
 	required_columns = ['strand', 'CpG_Coordinates', 'Sample_ID', 'Replicate', 'Tissue'] + methylation_cols
 	for col in required_columns:
@@ -226,27 +223,27 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	    value_name='Count'
 	)
 	
-	# create PMP
+	# Create PMP
 	df_melted['PMP'] = (
 	    df_melted['strand'] + ':' + df_melted['CpG_Coordinates'] + ':' + df_melted['Methylation_Status']
 	)
 	
-	# Group data by Tissue and PMP to calculate total counts
+	# group data by Tissue and PMP to calculate total counts
 	grouped = df_melted.groupby(['Tissue', 'PMP']).agg(
 	    Total_Count=('Count', 'sum')
 	).reset_index()
 	
-	# calculate the total counts per tissue
+	# Calculate the total counts for each tissue
 	grouped['Total_Tissue_Count'] = grouped.groupby('Tissue')['Total_Count'].transform('sum')
 	
 	# Calculate VRF
 	grouped['VRF'] = grouped['Total_Count'] / grouped['Total_Tissue_Count']
 	
-	
 	output_file = "vrf_results.csv"
 	grouped.to_csv(output_file, index=False)
 	
 	print(f"VRF results saved to {output_file}")
+	
 
 
  ### Result of varient read fraction (screenshot of result file)
