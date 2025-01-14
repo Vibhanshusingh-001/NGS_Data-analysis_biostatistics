@@ -1,9 +1,7 @@
-# Load libraries
+# load package 
 library(ggplot2)
 
-# Read the variant metrics file
 variant_data <- read.csv("variant_metrics.csv")
-
 # Calculate overall Ti/Tv ratio
 ti_count <- sum(variant_data$Ti.Tv == "Transition")
 tv_count <- sum(variant_data$Ti.Tv == "Transversion")
