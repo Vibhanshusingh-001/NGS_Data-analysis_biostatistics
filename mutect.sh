@@ -1,14 +1,10 @@
-#!/bin/bash
 
-# Directories and files
-input_dir="input"                 # Directory containing BAM files
-output_dir="output_mutect"               # Directory to save VCF files
-reference="GCA_000001405.29_GRCh38.p14_genomic.fna"            # Reference genome file
+input_dir="input"                
+output_dir="output_mutect"               
+reference="GCA_000001405.29_GRCh38.p14_genomic.fna"          
 
-# Create output directory if it doesn't exist
 mkdir -p "$output_dir"
 
-# Loop through BAM files in the input directory
 for bam_file in "$input_dir"/*.bam; do
     if [ -f "$bam_file" ]; then
         # Get the base name of the BAM file
@@ -23,7 +19,7 @@ for bam_file in "$input_dir"/*.bam; do
             -I "$bam_file" \
             -O "$output_vcf" \
 
-        # Check for errors
+        # Check for error
         if [ $? -eq 0 ]; then
             echo "Completed $bam_file -> $output_vcf"
         else
