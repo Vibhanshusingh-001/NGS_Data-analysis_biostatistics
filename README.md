@@ -246,9 +246,6 @@ The dataset (Link to Data) summarizes phased methylation patterns from NGS resul
 	
 
 
- ### Result of varient read fraction (screenshot of result file)
- ![Screenshot from 2025-01-07 22-17-33](https://github.com/user-attachments/assets/4f1be094-f042-4518-a2e8-128fd8d640d5)
-
  # Address the following questions 
  ### How does sequencing depth affect specificity confidence?
 Sequencing depth directly affects specificity confidence by improving accuracy and reducing errors. Higher depth ensures reliable detection of true variants or methylation patterns, minimizes false positives/negatives, and increases statistical power.
@@ -264,15 +261,15 @@ Sequencing depth directly affects specificity confidence by improving accuracy a
  	Reduced Sensitivitys
 ### For the top 10 PMPs, estimate the threshold of reads required to confidently call Tissue #2 at a sequencing depth of 1 million reads.
 	
-	import pandas as pd
+         import pandas as pd
 	
-	file_path = "statistical_significant_pmps.csv" 
+	file_path = "statistical_significant_pmps.csv"  # Use the provided data file
 	data = pd.read_csv(file_path)
 	
-	# sort by Adjusted P-Value to get the top 10 PMPs
+	# Sort by Adjusted P-Value (column 'Adjusted_P_Value') to get the top 10 PMPs
 	top_pmps = data.sort_values(by='Adjusted_P_Value').head(10)
 	
-	# assuming a sequencing depth of 1 million reads for tissue #2
+	# Assuming a sequencing depth of 1 million reads for Tissue #2
 	sequencing_depth_t2 = 1_000_000
 	
 	# Estimate the threshold of reads required for each PMP
@@ -280,14 +277,15 @@ Sequencing depth directly affects specificity confidence by improving accuracy a
 	
 	print(top_pmps[['CpG_Coordinates', 'Methylation_Status', 'Total_Count_T2', 'Threshold_Reads_T2']])
 
- ![Screenshot from 2025-01-09 14-06-05](https://github.com/user-attachments/assets/6f727b27-c4ee-45da-b3e2-90bc57996c0d)
+ ![Screenshot from 2025-01-14 15-16-40](https://github.com/user-attachments/assets/0c28fed0-d93d-482d-8d07-3a05d15a6985)
 
 	
+		
+		
 	
-
-
-
-
+	
+	
+	
 
 
 
