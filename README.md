@@ -578,7 +578,8 @@ Alignment score is greater than 95%
 
 			
 #### (c) Use the normal tissue to calculate the median background mutation level.The background mutation level accounts for sequencing errors or biasesthat can mimic true mutations. Determine how many reads per million are required to confidently call a given mutation.
-        import numpy as np
+	
+	import numpy as np
 	import pysam
 	
 	def calculate_background_mutation_rate(vcf_file, bam_file):
@@ -615,7 +616,7 @@ Alignment score is greater than 95%
 	        "Confidence Threshold": confidence_threshold,
 	    }
 	
-	vcf_file = "fixed_1.vcf"  # same for second sample 
+	vcf_file = "fixed_1.vcf"  
 	bam_file = "fixed_1.bam"  
 	
 	results = calculate_background_mutation_rate(vcf_file, bam_file)
