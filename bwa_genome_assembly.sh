@@ -1,8 +1,5 @@
-
-
 #  reference genome
 REF="GCA_000001405.29_GRCh38.p14_genomic.fna"
-
 
 SAMPLES=("PA220KH-lib09-P19-Tumor_S2_L001" "PA221MH-lib09-P19-Norm_S1_L001")
 
