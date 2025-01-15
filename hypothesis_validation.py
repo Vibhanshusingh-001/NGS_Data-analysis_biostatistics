@@ -77,28 +77,21 @@ for chunk in pd.read_csv(file_path, chunksize=chunk_size):
         true_negatives = contingency_table[1][1]
         total_negatives = contingency_table[1][0] + contingency_table[1][1]
         specificity = true_negatives / total_negatives if total_negatives > 0 else 0
-
         cpg_results.append((cpg, p_value, specificity))
-
 # Convert results to DataFrame
 pmp_df = pd.DataFrame(pmp_results, columns=['CpG_Coordinates', 'Methylation_Status', 'P_Value', 'Specificity'])
 cpg_df = pd.DataFrame(cpg_results, columns=['CpG_Coordinates', 'P_Value', 'Specificity'])
-
 # Adjust p-values
 pmp_df['Adjusted_P_Value'] = multipletests(pmp_df['P_Value'], method='fdr_bh')[1]
 cpg_df['Adjusted_P_Value'] = multipletests(cpg_df['P_Value'], method='fdr_bh')[1]
-
 # Filter top 10 PMPs and CpG sites
 top_pmps = pmp_df.sort_values(by='Specificity', ascending=False).head(10)
 top_cpgs = cpg_df.sort_values(by='Specificity', ascending=False).head(10)
-
 # Compare Specificity Distributions
 plt.boxplot([top_pmps['Specificity'], top_cpgs['Specificity']], labels=['PMPs', 'CpG Sites'])
 plt.ylabel('Specificity')
 plt.title('Specificity Comparison: PMPs vs CpG Sites')
 plt.show()
-
 top_pmps.to_csv("top_10_pmps.csv", index=False)
 top_cpgs.to_csv("top_10_cpg_sites.csv", index=False)
-
 print("Top 10 PMPs and CpG sites saved. Specificity comparison completed.")
